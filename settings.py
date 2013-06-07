@@ -8,15 +8,35 @@ import subprocess
 from xml_all import add_settings, get_name_settings, get_by_name_settings, remove_settings
 
 
+class WinStatus:
+
+    def get_status(self):
+        if hasattr(self, 'show'):
+            pass
+        else:
+            setattr(self, 'show', False)
+        return self.show
+
+    def set_status(self, status):
+        if hasattr(self, 'show'):
+            self.show = status
+        else:
+            setattr(self, 'show', status)
+
+
 class Settings(gtk.Window):
 
-    def __init__(self):
+    def __init__(self, bridge):
         super(Settings, self).__init__()
 
         self.set_title('4sshmenu')
         self.set_size_request(200, 300)
         self.set_position(gtk.WIN_POS_CENTER)
         self.set_resizable(False)
+        self.connect('delete-event', self.hide_window)
+
+        self.bridge = bridge
+
         try:
             self.set_icon_from_file('images/tray.png')
         except Exception, e:
@@ -55,6 +75,16 @@ class Settings(gtk.Window):
         hbox.pack_start(btn_remove)
 
         self.add(vbox)
+
+    def show_me(self):
+        if not self.bridge.get_status():
+            self.show_all()
+            self.bridge.set_status(True)
+
+    def hide_window(self, window, event):
+        window.hide()
+        self.bridge.set_status(False)
+        return True
 
     def create_model(self):
 
@@ -117,6 +147,7 @@ class AddSsh(gtk.Window):
         self.set_position(gtk.WIN_POS_CENTER)
         self.set_resizable(False)
         self.edit = False
+
         try:
             self.set_icon_from_file('images/tray.png')
         except Exception, e:

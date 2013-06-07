@@ -3,7 +3,7 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 
-from settings import Settings
+from settings import Settings, WinStatus
 
 
 class SystemTrayIcon:
@@ -15,7 +15,10 @@ class SystemTrayIcon:
         self.tray.connect('activate', self.on_left_click)
         self.tray.set_tooltip('pysshmenu')
 
-    def on_right_click(self, icon, event_button, event_time):
+        self.bridge = WinStatus()
+        self.bridge.set_status(False)
+
+    def on_right_click(self, widget, event_button, event_time):
         menu = gtk.Menu()
 
         settings = gtk.MenuItem('Servers list')
@@ -31,8 +34,8 @@ class SystemTrayIcon:
         menu.popup(None, None, gtk.status_icon_position_menu,
                 event_button, event_time, self.tray)
 
-    def on_left_click(self, icon):
-        Settings().show_all()
+    def on_left_click(self, widget):
+        self.show_settings(widget)
 
     def show_settings(self, widget):
-        Settings().show_all()
+        Settings(self.bridge).show_me()
