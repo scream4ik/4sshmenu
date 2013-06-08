@@ -13,7 +13,7 @@ class SystemTrayIcon:
         self.tray.set_from_file('images/tray.png')
         self.tray.connect('popup-menu', self.on_right_click)
         self.tray.connect('activate', self.on_left_click)
-        self.tray.set_tooltip('pysshmenu')
+        self.tray.set_tooltip('4sshmenu')
 
         self.bridge = WinStatus()
         self.bridge.set_status(False)
