@@ -86,6 +86,10 @@ class Settings(gtk.Window):
         self.bridge.set_status(False)
         return True
 
+    def hide_me(self):
+        self.hide()
+        self.bridge.set_status(False)
+
     def create_model(self):
 
         store = gtk.ListStore(str)
@@ -130,7 +134,7 @@ class Settings(gtk.Window):
         (tm, ti) = tree_sel.get_selected()
         try:
             username, host, port = get_by_name_settings(tm.get_value(ti, 0))
-            self.hide()
+            self.hide_me()
             cmd = '%s@%s -p %s' % (username, host, port)
             subprocess.Popen(args=["mate-terminal", "--command=ssh %s" % cmd])
         except TypeError:
