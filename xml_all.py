@@ -3,7 +3,7 @@ import os
 from xml.dom.minidom import *
 
 
-SETTINGS_FILE = os.path.expanduser('~/.pysshmenu/config.xml')
+SETTINGS_FILE = os.path.expanduser('~/.4sshmenu/config.xml')
 
 
 def check_settings():
